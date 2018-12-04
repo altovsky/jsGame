@@ -2,6 +2,7 @@
 
 class Vector {
   constructor(coordinateX = 0, coordinateY = 0) {
+
     this.x = coordinateX;
     this.y = coordinateY;
   }
@@ -64,8 +65,10 @@ class Actor {
       return false;
     }
     
-    let isRightHand = this.left < actor.right, isLeftHand = this.right > actor.left;
-    let isBelow = this.top < actor.bottom, isAbove = this.bottom > actor.top;
+    let isRightHand = this.left < actor.right, 
+    	isLeftHand = this.right > actor.left,
+    	isBelow = this.top < actor.bottom,
+    	isAbove = this.bottom > actor.top;
 
     return isRightHand && isLeftHand && isBelow && isAbove;
   }
@@ -75,6 +78,7 @@ class Actor {
 
 class Level {
   constructor(grid = [], actors = []) {
+
     this.grid = grid;
     this.actors = actors;
     actors.some((actor) => {
@@ -158,6 +162,7 @@ class Level {
 
 class LevelParser {
   constructor(objectDictionary) {
+
     this.dictionary = objectDictionary;
   }
 
@@ -322,3 +327,60 @@ class Coin extends Actor {
     this.pos.y = newPosition.y;
   }
 }
+
+
+class Player extends Actor {
+  constructor(initPosition) {
+    super(initPosition);
+
+    this.size = new Vector(0.8, 1.5);
+    this.pos = this.pos.plus(new Vector(0, -0.5))
+    this.speed = new Vector(0, 0);
+  }
+  
+  get type() {
+      return 'player';
+  	}
+}
+
+
+//////////////////////
+const schemas = [
+  [
+    '            ',
+    '     |      ',
+    '            ',
+    '            ',
+    '       =    ',
+    '          o ',
+    '        !xxx',
+    ' @          ',
+    'xxx!        ',
+    '            '
+  ],
+  [
+    '         v    ',
+    '       v      ',
+    '     v        ',
+    '   o       o  ',
+    '           x  ',
+    '@      x      ',
+    'x      o      ',
+    '           o  ',
+    '       o     x',
+    'o      x      ',
+    'x             ',
+    '              '
+  ]
+];
+const actorDict = {
+  '@': Player,
+  'v': FireRain,
+  'o': Coin,
+  '=': HorizontalFireball,
+  '|': VerticalFireball, 
+
+}
+const parser = new LevelParser(actorDict);
+runGame(schemas, parser, DOMDisplay)
+  .then(() => console.log('Вы выиграли приз!'));
