@@ -172,7 +172,7 @@ class LevelParser {
         return this.dictionary[position];
       }
     }
-    return undefined;
+    return;
   }
 
   obstacleFromSymbol(symb) {
@@ -181,7 +181,7 @@ class LevelParser {
     } else if (symb === '!') {
       return 'lava';
     } else {
-      return undefined;
+      return;
     }
   }
 
@@ -342,3 +342,45 @@ class Player extends Actor {
       return 'player';
   	}
 }
+
+
+//////////////////////
+const schemas = [
+  [
+    '            ',
+    '     |      ',
+    '            ',
+    '            ',
+    '       =    ',
+    '          o ',
+    '        !xxx',
+    ' @          ',
+    'xxx!        ',
+    '            '
+  ],
+  [
+    '         v    ',
+    '        v     ',
+    '     v        ',
+    '   o       o  ',
+    '           x  ',
+    '@      x      ',
+    'x      o      ',
+    '           o  ',
+    '       o     x',
+    'o      x!     ',
+    'x             ',
+    '              '
+  ]
+];
+const actorDict = {
+  '@': Player,
+  'v': FireRain,
+  'o': Coin,
+  '=': HorizontalFireball,
+  '|': VerticalFireball, 
+
+}
+const parser = new LevelParser(actorDict);
+runGame(schemas, parser, DOMDisplay)
+  .then(() => console.log('Вы выиграли приз!'));
